@@ -200,22 +200,18 @@ size_t EthernetClient::write(const uint8_t *buf, size_t size)
     if (written > 0)
     {
       totalBytesSent += written;
-
       ETG_LOGINFO3("EthernetClient::write: written = ", written, ", totalBytesSent =", totalBytesSent);
 
       if (totalBytesSent >= size)
       {
         ETG_LOGINFO3("EthernetClient::write: Done, written = ", written, ", totalBytesSent =", totalBytesSent);
-
-        //completed successfully
-        retry = 0;
+        return totalBytesSent;  //completed successfully
       }
       else
       {
         buf += written;
         bytesRemaining -= written;
         retry = ETHERNET_CLIENT_MAX_WRITE_RETRY;
-
         ETG_LOGINFO3("EthernetClient::write: Partially Done, written = ", written, ", bytesRemaining =", bytesRemaining);
       }
     }
